@@ -6,54 +6,50 @@
 
 <style>
 
-html {
-	width: 100%;
-	height: 100%;
-}
-
 body {
 	margin: 1.0em 1.5em;
 }
 
-html, mtext, code rt {
+html {
 	font-family: "Nimbus Sans", sans-serif;
+	font-size: 12pt;
+	line-height: 1.25em;
 }
 
-math.code, code.code {
-	font-family: "Nimbus Mono PS", monospace;
-	text-align: left;
-	margin: 0.5em 3.0em;
+p {
+	margin: 1.25em 0.0em;
 }
-/*
-msep {
-	white-space: pre;
+
+h1 { font-size: 2.0em; color: #9BF; }
+h2 { font-size: 1.6em; color: #48C; }
+h3 { font-size: 1.2em; color: #148; }
+
+code {
+	font-family: "Nimbus Mono PS", monospace;
+	font-variant-ligatures: none;
 }
 
 code.block {
+	display: block;
+	text-align: left;
+	margin: 0.2em 2.0em;
+	border-left: 0.2em solid #9AD;
+	padding-left: 0.3em;
 }
 
-code rt {
-	text-align: center;
-	font-size: 0.6em;
-	color: #66F;
-	border-bottom: 1px solid #99F;
-	margin-bottom: 0.2em;
-}
-*/
 code.ruby {
-	display: block ruby;
 	ruby-position: under;
 }
 
 code.ruby item {
-	display: ruby-base;
+	display: ruby;
 }
 
 code.ruby desc {
 	font-family: "Nimbus Sans", sans-serif;
 	text-align: center;
 	font-size: 0.6em;
-	color: #66F;
+	color: #36F;
 	display: ruby-text;
 }
 
@@ -65,33 +61,96 @@ code.ruby desc {
 <h1>Основы</h1>
 
 <section>
-<h1>Функции</h1>
-<em>Функцией</em> в C++ называется любая подпрограмма, даже если она не возвращает никакого значения. Любая функция состоит из заголовка, определяющего, как она может быть использована, и тела, определяющего выполняемые функцией действия. Заголовок выглядит следующим образом:
+<h2>Управляющие конструкции</h2>
+<section>
+<h3>Ветвления</h3>
+(if, switch)
+</section>
+<section>
+<h3>Циклы</h3>
+(for, while, do...while)
+</section>
+</section>
 
-<!--
-<math class="code" display="block">
-<munder><mi>void</mi><munder><mo>⏟</mo><mtext>тип</mtext></munder></munder>
-<msep> </msep>
-<munder><mi>some_func</mi><munder><mo>⏟</mo><mtext>имя</mtext></munder></munder>
-(<munder><mrow>int arg1, long *arg2</mrow><munder><mo>⏟</mo><mtext>аргументы</mtext></munder></munder>)
-</math>
--->
-<code class="code block ruby">
-<item>void</item> <item>some_func</item>(<item>int arg1, long *arg2</item>)
-<desc>тип</desc><desc>имя</desc><desc></desc><desc>аргументы</desc>
+<section>
+<h2>Функции</h2>
+<p><em>Функцией</em> в C++ называется любая подпрограмма, даже если она не возвращает никакого значения. Любая функция состоит из заголовка, определяющего, как она может быть использована, и тела, определяющего выполняемые функцией действия. Заголовок выглядит следующим образом:
+<code class="block ruby"><item>int<desc>тип</desc></item> <item>some_func<desc>имя</desc></item>(<item>int arg1, long *arg2<desc>аргументы</desc></item>)</code>
+Если аргументов нет, скобки остаются пустыми (либо можно поставить слово <code>void</code>, как в C). Если функция не должна возвращать значение, в качестве его типа указывается <code>void</code>.</p>
+
+<p>Тело функции — это (почти всегда) блок, т. е. заключённая в фигурные скобки последовательность операторов. Внутри тела аргументы функции могут использоваться, как обычные переменные, но их начальные значения передаются извне, при вызове. Для возврата значения и выхода из функции используется оператор <code>return</code>:
+<code class="block ruby">return <item>some_value<desc>возвращаемое значение</desc></item>;</code>
+Если функция должна возвращать значение (т. е. её тип отличен от <code>void</code>), то его использование обязательно. В противном случае он пишется без аргумента:
+<code class="block">return;</code>
+и в конце функции не требуется (но может быть использован в любом месте).
+</p>
+
+<p>Язык C++ позволяет использовать лишь те функции, которые определены или объявлены выше места использования. Объявление функции состоит только из заголовка и завершается точкой с запятой:
+<code class="block">
+double sin(double x);
 </code>
 
+и позволяет вынести определение функции в другой файл (или просто ниже места использования). Имена аргументов в объявлении указывать не обязательно, но рекомендуется для читаемости кода. Вложенные функции не допускаются.</p>
+
+<section>
+<h3>Перегрузка функций</h3>
+<p>C++ позволяет определить несколько функций с одним именем при условии, что они принимают аргументы разных типов, например:
+<code class="block">
+int print(double value);<br />
+void print(const char *string);
+</code>
+При обращении к функции компилятор выбирает наиболее подходящий вариант, применяя при необходимости преобразования типов; например, <code>print(12.5)</code> соответствует первому варианту, <code>print("Привет")</code> — второму, а <code>print(6)</code> — снова первому, т. к. <code>int</code> приводится к <code>double</code>; возвращаемый тип при этом не учитывается. Если таких вариантов несколько, то программа не скомпилируется; например, если добавить функцию <code>int print(float value)</code>, то вызов <code>print(6)</code> станет некорректным, поскольку <code>int</code> приводится и к <code>float</code>, и к <code>double</code>. В таких случаях приведение типов нужно делать явно, например, <code>print((float)6)</code>.</p>
 </section>
+
+<section>
+<h3>Значения по умолчанию</h3>
+<p>В простых случаях вместо перегрузки функций можно обойтись указанием значений по умолчанию для последних аргументов:
+<code class="block">
+void walk(double distance, double speed = 3.0, const char *comment = "Куда идём мы с пятачком...")
+</code>
+Эти значения будут использованы, если вызвать функцию с меньшим числом аргументов, чем у неё есть. Например, следующие вызовы будут эквивалентны:
+<code class="block">
+walk(4.2);<br />
+walk(4.2, 3.0);<br />
+walk(4.2, 3.0, "Куда идём мы с пятачком...");
+</code>
+Сочетание с перегрузкой возможно, но все варианты должны быть различимы. Благодаря значениям по умолчанию функция <code>walk</code> из примера как бы распадается на 3:
+<code class="block">
+void walk(double distance);<br />
+void walk(double distance, double speed);<br />
+void walk(double distance, double speed, const char *comment);
+</code>
+и, соответственно, такие варианты добавлять нельзя. Но, например, <code>void walk(const char *destination);</code> добавить можно.
+</p>
+</section>
+
+</section>
+
+<section>
+<h2>Пользовательские типы</h2>
+<section>
+<h3>Структуры</h3>
+</section>
+<section>
+<h3>Перечисления</h3>
+</section>
+<section>
+<h3>Объединения</h3>
+</section>
+</section>
+
+</section>
+
+<section>
+<h1>Классы</h1>
 </section>
 
 <section>
 <h1>Шаблоны</h1>
-
 </section>
 
 <section>
 <h1>STL</h1>
-
 </section>
 
 </body>
