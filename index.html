@@ -158,6 +158,26 @@ void walk(double distance, double speed, const char *comment);
 
 <section>
 <h1>Классы</h1>
+<p>Одно из основных отличий C++ от C — наличие классов. В каком-то смысле класс — это просто структура с привязанными функциями (и даже определяться может ключевым словом <code>struct</code>):
+<code class="block">struct MyClass {
+	int counter;
+	float multiplier;
+	float getValue(float add) {
+		return multiplier * counter + add;
+	}
+};
+</code>
+однако есть несколько важных различий.</p>
+
+<section>
+<h2>Методы</h2>
+В теле класса можно объявлять и определять функции. Такие функции называются <em>методами</em> класса. Вызоз метода осуществляется аналогично обращению к полю структуры (класса):
+<code class="block">MyClass my_class_variable;
+...
+float v = my_class_variable.getValue(17.5);
+</code>
+При этом помимо явных аргументов метод неявно получает аргумент <code>this</code> — указатель на объект, для которого он вызван (здесь это <code>&amp;my_class_variable</code>, тип <code>MyClass *</code>). В самом же методе можно обращаться к полям класса — это будет обращением к соответствующему полю <code>this</code> (если только нет аргумента или локальной переменной с тем же именем); например, <code>multiplier</code> в методе выше — это то же самое, что <code>this->multiplier</code>, т. е. <code>my_class_variable.multiplier</code>.
+</section>
 </section>
 
 <section>
