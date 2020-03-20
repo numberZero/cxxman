@@ -28,8 +28,26 @@ html {
 	}
 }
 
+a:link {
+	color: #48C;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #84D;
+	text-decoration: underline;
+}
+
+a[href^="#"] {
+	text-decoration: dashed underline;
+}
+
 p {
 	margin: 0.0em 0.0em 1.25em;
+}
+
+p ul {
+	margin: 0.25em 0.0em;
 }
 
 h1 { font-size: 2.0em; color: #9BF; }
@@ -44,6 +62,19 @@ h1, h2, h3, h4 {
 section.advanced {
 	font-size: 0.8em;
 	margin: 0.2em 3.0em;
+}
+
+.note {
+	font-size: 0.8em;
+	font-style: italic;
+	margin-left: 2.5em;
+	border-left: 0.25em solid #999;
+	padding-left: 0.375em;
+}
+
+.note:before {
+	content: "Замечание: ";
+	font-weight: bold;
 }
 
 code {
@@ -72,7 +103,6 @@ code.ruby item {
 }
 
 code.ruby desc {
-	white-space: normal;
 	font-family: "Nimbus Sans", sans-serif;
 	text-align: center;
 	font-size: 0.6em;
@@ -102,7 +132,7 @@ code.ruby desc {
 <section>
 <h2>Функции</h2>
 <p><em>Функцией</em> в C++ называется любая подпрограмма, даже если она не возвращает никакого значения. Любая функция состоит из заголовка, определяющего, как она может быть использована, и тела, определяющего выполняемые функцией действия. Заголовок выглядит следующим образом:
-<code class="block ruby"><item>int<desc>тип</desc></item> <item>some_func<desc>имя</desc></item>(<item>int arg1, long *arg2<desc>аргументы</desc></item>)</code>
+<code class="block ruby"><item>int<desc>возвращаемый тип</desc></item> <item>some_func<desc>имя</desc></item>(<item>int arg1, long *arg2<desc>аргументы</desc></item>)</code>
 Если аргументов нет, скобки остаются пустыми (либо можно поставить слово <code>void</code>, как в C). Если функция не должна возвращать значение, в качестве его типа указывается <code>void</code>.</p>
 
 <p>Тело функции — это (почти всегда) блок, т. е. заключённая в фигурные скобки последовательность операторов. Внутри тела аргументы функции могут использоваться, как обычные переменные, но их начальные значения передаются извне, при вызове. Для возврата значения и выхода из функции используется оператор <code>return</code>:
@@ -184,7 +214,7 @@ void walk(double distance, double speed, const char *comment);
 <h2>Методы</h2>
 <p>В теле класса можно объявлять и определять функции. Такие функции называются <em>методами</em> класса. Вызоз метода осуществляется аналогично обращению к полю структуры (класса):
 <code class="block">MyClass my_class_variable;
-...
+/*...*/
 float v = my_class_variable.countValue(17);
 </code>
 При этом помимо явных аргументов метод неявно получает аргумент <code>this</code> — указатель на объект, для которого он вызван (здесь это <code>&amp;my_class_variable</code>, тип <code>MyClass *</code>). В самом же методе можно обращаться к полям класса — это будет обращением к соответствующему полю <code>this</code> (если только нет аргумента или локальной переменной с тем же именем); например, <code>multiplier</code> в методе выше — это то же самое, что <code>this->multiplier</code>, т. е. <code>my_class_variable.multiplier</code>.</p>
@@ -210,11 +240,11 @@ float v = my_class_variable.countValue(17);
 
 <p>В целом методы ведут себя практически так же, как обычные функции, только с дополнительным аргументом. Также можно разделить объявление и определение, только в определении нужно указывать полное имя метода, вместе с именем класса:
 <code class="block">struct MyClass {
-	...
+	/*...*/
 	float countValue(int add);
 };
 float MyClass::countValue(int add) {
-...
+/*...*/
 }
 </code>
 </p>
