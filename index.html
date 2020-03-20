@@ -16,6 +16,18 @@ html {
 	line-height: 1.25em;
 }
 
+@media screen and (max-width: 15cm) {
+	html {
+		font-size: 8pt;
+	}
+}
+
+@media screen and not (max-width: 15cm) {
+	body {
+		margin: 1.0em 10%;
+	}
+}
+
 p {
 	margin: 1.25em 0.0em;
 }
@@ -27,14 +39,18 @@ h3 { font-size: 1.2em; color: #148; }
 code {
 	font-family: "Nimbus Mono PS", monospace;
 	font-variant-ligatures: none;
+	white-space: nowrap;
+	color: #037;
 }
 
 code.block {
 	display: block;
+	color: inherit;
 	text-align: left;
 	margin: 0.2em 2.0em;
 	border-left: 0.2em solid #9AD;
 	padding-left: 0.3em;
+	white-space: pre;
 }
 
 code.ruby {
@@ -46,6 +62,7 @@ code.ruby item {
 }
 
 code.ruby desc {
+	white-space: normal;
 	font-family: "Nimbus Sans", sans-serif;
 	text-align: center;
 	font-size: 0.6em;
@@ -86,8 +103,7 @@ code.ruby desc {
 </p>
 
 <p>Язык C++ позволяет использовать лишь те функции, которые определены или объявлены выше места использования. Объявление функции состоит только из заголовка и завершается точкой с запятой:
-<code class="block">
-double sin(double x);
+<code class="block">double sin(double x);
 </code>
 
 и позволяет вынести определение функции в другой файл (или просто ниже места использования). Имена аргументов в объявлении указывать не обязательно, но рекомендуется для читаемости кода. Вложенные функции не допускаются.</p>
@@ -95,8 +111,7 @@ double sin(double x);
 <section>
 <h3>Перегрузка функций</h3>
 <p>C++ позволяет определить несколько функций с одним именем при условии, что они принимают аргументы разных типов, например:
-<code class="block">
-int print(double value);<br />
+<code class="block">int print(double value);
 void print(const char *string);
 </code>
 При обращении к функции компилятор выбирает наиболее подходящий вариант, применяя при необходимости преобразования типов; например, <code>print(12.5)</code> соответствует первому варианту, <code>print("Привет")</code> — второму, а <code>print(6)</code> — снова первому, т. к. <code>int</code> приводится к <code>double</code>; возвращаемый тип при этом не учитывается. Если таких вариантов несколько, то программа не скомпилируется; например, если добавить функцию <code>int print(float value)</code>, то вызов <code>print(6)</code> станет некорректным, поскольку <code>int</code> приводится и к <code>float</code>, и к <code>double</code>. В таких случаях приведение типов нужно делать явно, например, <code>print((float)6)</code>.</p>
@@ -105,22 +120,20 @@ void print(const char *string);
 <section>
 <h3>Значения по умолчанию</h3>
 <p>В простых случаях вместо перегрузки функций можно обойтись указанием значений по умолчанию для последних аргументов:
-<code class="block">
-void walk(double distance, double speed = 3.0, const char *comment = "Куда идём мы с пятачком...")
+<code class="block">void walk(double distance, double speed = 3.0,
+	const char *comment = "Куда идём мы с пятачком...");
 </code>
 Эти значения будут использованы, если вызвать функцию с меньшим числом аргументов, чем у неё есть. Например, следующие вызовы будут эквивалентны:
-<code class="block">
-walk(4.2);<br />
-walk(4.2, 3.0);<br />
+<code class="block">walk(4.2);
+walk(4.2, 3.0);
 walk(4.2, 3.0, "Куда идём мы с пятачком...");
 </code>
 Сочетание с перегрузкой возможно, но все варианты должны быть различимы. Благодаря значениям по умолчанию функция <code>walk</code> из примера как бы распадается на 3:
-<code class="block">
-void walk(double distance);<br />
-void walk(double distance, double speed);<br />
+<code class="block">void walk(double distance);
+void walk(double distance, double speed);
 void walk(double distance, double speed, const char *comment);
 </code>
-и, соответственно, такие варианты добавлять нельзя. Но, например, <code>void walk(const char *destination);</code> добавить можно.
+и, соответственно, такие варианты добавлять нельзя. Но, например, <code>void walk(const char *destination)</code> добавить можно.
 </p>
 </section>
 
