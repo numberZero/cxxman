@@ -196,7 +196,7 @@ void walk(double distance, double speed, const char *comment);
 
 </section>
 
-<section>
+<section id="Раздел_Классы">
 <h1>Классы</h1>
 <p>Одно из основных отличий C++ от C — наличие классов. В каком-то смысле класс — это просто структура с привязанными функциями (и даже определяться может ключевым словом <code>struct</code>):
 <code class="block">struct MyClass {
@@ -252,11 +252,11 @@ float MyClass::countValue(int add) {
 </section>
 </section>
 
-<section>
+<section id="Раздел_Шаблоны">
 <h1>Шаблоны</h1>
 </section>
 
-<section>
+<section id="Раздел_STL">
 <h1>STL</h1>
 </section>
 
