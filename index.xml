@@ -194,6 +194,23 @@ void walk(double distance, double speed, const char *comment);
 </section>
 </section>
 
+<section>
+<h2>Разное</h2>
+<section>
+<h3>Управление памятью</h3>
+<p>Если в C есть функции <code>malloc</code> и <code>free</code> для динамического выделения памяти, то в C++ для тех же целей есть специальные <em>операторы</em> — <code>new</code> и <code>delete</code> (для массивов — <code>new[]</code> и <code>delete[]</code>). Используются следующим образом:
+<code class="block">int *dyn_var_1 = new int;
+int *dyn_var_2 = new int(3); // или new int{3}; будет создан int со значением 3
+int *dyn_array = new int[3]; // создаёт массив из 3 int’ов
+delete[] dyn_array; // квадратные скобки обязательны!
+delete dyn_var_1;
+delete dyn_var_2;
+</code>
+Отличие от <code>malloc</code> и <code>free</code> в том, что помимо выделения и освобождения памяти будут вызваны соответствующие конструкторы и деструкторы (если они нетривиальны, конечно; подробнее см. в <a href="#Раздел_Классы">разделе «Классы»</a>). Аналога функции <code>realloc</code> нет.</p>
+<p>В то же время в современном C++ явное использование этих операторов считается дурным тоном, т. к. слишком легко допустить утечку памяти, например. В реальных программах всегда следует использовать обёртки наподобие <code>std::unique_ptr</code>, <code>std::vector</code> (см. <a href="#Раздел_STL">раздел «STL»</a>), или даже свои — но отдельные от основной логики программы.</p>
+</section>
+</section>
+
 </section>
 
 <section id="Раздел_Классы">
